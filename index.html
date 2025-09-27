@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Source Code Viewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: all 0.3s ease;
+        }
+        .code-container {
+            font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        .loader {
+            border-top-color: #3b82f6;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                <i class="fas fa-code text-blue-600 mr-3"></i>Website Source Code Viewer
+            </h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Lihat source code HTML dari website mana pun dengan mudah. Cukup masukkan URL dan klik Lihat Source Code.
+            </p>
+        </header>
+
+        <!-- Input Card -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 card-hover">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                <i class="fas fa-globe text-blue-500 mr-2"></i>Masukkan URL Website
+            </h2>
+            
+            <div class="flex flex-col md:flex-row gap-4">
+                <input 
+                    type="text" 
+                    id="urlInput" 
+                    placeholder="https://example.com" 
+                    class="flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                <button 
+                    id="fetchButton" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-colors flex items-center justify-center"
+                >
+                    <i class="fas fa-eye mr-2"></i>Lihat Source Code
+                </button>
+            </div>
+            
+            <div id="errorMessage" class="mt-4 text-red-600 bg-red-50 p-3 rounded-lg hidden">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <span id="errorText"></span>
+            </div>
+            
+            <div id="loading" class="mt-6 hidden">
+                <div class="flex items-center justify-center">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+                    <span class="ml-3 text-gray-600">Memuat source code...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Card -->
+        <div id="results" class="bg-white rounded-xl shadow-lg p-6 mb-8 hidden card-hover">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">
+                    <i class="fas fa-file-code text-green-500 mr-2"></i>Source Code
+                </h2>
+                <div class="flex space-x-2">
+                    <button id="copyButton" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-lg transition-colors flex items-center">
+                        <i class="fas fa-copy mr-2"></i>Salin
+                    </button>
+                    <button id="downloadButton" class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg transition-colors flex items-center">
+                        <i class="fas fa-download mr-2"></i>Download
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-gray-800 rounded-lg p-4 relative">
+                <div id="sourceCode" class="code-container text-gray-200 overflow-auto max-h-96">
+                    <!-- Source code akan ditampilkan di sini -->
+                </div>
+                <div id="charCount" class="absolute top-2 right-2 bg-gray-900 text-gray-400 text-xs px-2 py-1 rounded">
+                    0 karakter
+                </div>
+            </div>
+            
+            <div class="mt-4 text-sm text-gray-600">
+                <i class="fas fa-info-circle mr-2"></i>
+                <span id="urlDisplay"></span>
+            </div>
+        </div>
+
+        <!-- Instructions Card -->
+        <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">
+                <i class="fas fa-question-circle text-purple-500 mr-2"></i>Cara Penggunaan
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                            <span class="font-semibold">1</span>
+                        </div>
+                        <h3 class="font-medium text-gray-800">Masukkan URL</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm">Ketik atau salin URL website yang ingin Anda lihat source code-nya (contoh: https://example.com)</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                            <span class="font-semibold">2</span>
+                        </div>
+                        <h3 class="font-medium text-gray-800">Klik Lihat Source Code</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm">Klik tombol "Lihat Source Code" untuk memproses dan mengambil source code dari website</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                            <span class="font-semibold">3</span>
+                        </div>
+                        <h3 class="font-medium text-gray-800">Lihat dan Analisis</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm">Source code akan ditampilkan dalam format yang mudah dibaca dengan highlight syntax</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="flex items-center mb-2">
+                        <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                            <span class="font-semibold">4</span>
+                        </div>
+                        <h3 class="font-medium text-gray-800">Salin atau Download</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm">Gunakan tombol "Salin" atau "Download" untuk menyimpan source code yang ditampilkan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlInput = document.getElementById('urlInput');
+            const fetchButton = document.getElementById('fetchButton');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const sourceCode = document.getElementById('sourceCode');
+            const charCount = document.getElementById('charCount');
+            const urlDisplay = document.getElementById('urlDisplay');
+            const copyButton = document.getElementById('copyButton');
+            const downloadButton = document.getElementById('downloadButton');
+            
+            // Initial focus pada input
+            urlInput.focus();
+            
+            // Event handler untuk tombol fetch
+            fetchButton.addEventListener('click', fetchSourceCode);
+            
+            // Event handler untuk tekan Enter di input
+            urlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    fetchSourceCode();
+                }
+            });
+            
+            // Event handler untuk tombol salin
+            copyButton.addEventListener('click', function() {
+                const textToCopy = sourceCode.textContent;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Ubah tampilan tombol untuk menandakan berhasil disalin
+                    const originalText = copyButton.innerHTML;
+                    copyButton.innerHTML = '<i class="fas fa-check mr-2"></i>Disalin!';
+                    copyButton.classList.add('bg-green-100', 'text-green-800');
+                    
+                    setTimeout(() => {
+                        copyButton.innerHTML = originalText;
+                        copyButton.classList.remove('bg-green-100', 'text-green-800');
+                    }, 2000);
+                }).catch(err => {
+                    showError('Gagal menyalin teks: ' + err);
+                });
+            });
+            
+            // Event handler untuk tombol download
+            downloadButton.addEventListener('click', function() {
+                const textToDownload = sourceCode.textContent;
+                const blob = new Blob([textToDownload], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                
+                // Buar nama file dari URL
+                let fileName = 'source-code.html';
+                try {
+                    const urlObj = new URL(urlInput.value);
+                    fileName = `source-code-${urlObj.hostname}.html`;
+                } catch (e) {
+                    // Jika URL tidak valid, gunakan default
+                }
+                
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // Fungsi untuk mengambil source code
+            function fetchSourceCode() {
+                const url = urlInput.value.trim();
+                
+                // Validasi input
+                if (!url) {
+                    showError('Harap masukkan URL website');
+                    return;
+                }
+                
+                // Normalisasi URL
+                let normalizedUrl = url;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    normalizedUrl = 'https://' + url;
+                }
+                
+                // Validasi format URL
+                try {
+                    new URL(normalizedUrl);
+                } catch (e) {
+                    showError('Format URL tidak valid. Contoh: https://example.com');
+                    return;
+                }
+                
+                // Sembunyikan error dan results, tampilkan loading
+                errorMessage.classList.add('hidden');
+                results.classList.add('hidden');
+                loading.classList.remove('hidden');
+                
+                // Gunakan CORS proxy untuk menghindari masalah CORS
+                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+                
+                // Lakukan fetch
+                fetch(proxyUrl + normalizedUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Gagal mengambil website: ${response.status} ${response.statusText}`);
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        // Tampilkan hasil
+                        displaySourceCode(html, normalizedUrl);
+                    })
+                    .catch(error => {
+                        showError(error.message || 'Terjadi kesalahan saat mengambil source code');
+                    })
+                    .finally(() => {
+                        loading.classList.add('hidden');
+                    });
+            }
+            
+            // Fungsi untuk menampilkan source code
+            function displaySourceCode(code, url) {
+                // Format dan tampilkan code
+                sourceCode.textContent = code;
+                
+                // Update karakter count
+                charCount.textContent = code.length + ' karakter';
+                
+                // Tampilkan URL
+                urlDisplay.textContent = 'Source code dari: ' + url;
+                
+                // Tampilkan results section
+                results.classList.remove('hidden');
+                
+                // Scroll ke results
+                results.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Fungsi untuk menampilkan error
+            function showError(message) {
+                errorText.textContent = message;
+                errorMessage.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
