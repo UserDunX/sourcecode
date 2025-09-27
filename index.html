@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Source Code Viewer</title>
+    <title>Website Source Code Viewer - Diperbaiki</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -35,6 +35,10 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+        .proxy-info {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -42,10 +46,10 @@
         <!-- Header -->
         <header class="text-center mb-12">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                <i class="fas fa-code text-blue-600 mr-3"></i>Website Source Code Viewer
+                <i class="fas fa-code text-blue-600 mr-3"></i>Website Source Code Viewer (Diperbaiki)
             </h1>
             <p class="text-gray-600 max-w-2xl mx-auto">
-                Lihat source code HTML dari website mana pun dengan mudah. Cukup masukkan URL dan klik Lihat Source Code.
+                Lihat source code HTML dari website mana pun. Masukkan URL lengkap (contoh: https://example.com) dan klik tombol.
             </p>
         </header>
 
@@ -78,8 +82,14 @@
             <div id="loading" class="mt-6 hidden">
                 <div class="flex items-center justify-center">
                     <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
-                    <span class="ml-3 text-gray-600">Memuat source code...</span>
+                    <span class="ml-3 text-gray-600">Memuat source code... (Ini bisa memakan waktu beberapa detik)</span>
                 </div>
+            </div>
+
+            <!-- Info tentang Proxy -->
+            <div class="proxy-info mt-4 p-3 rounded-lg text-sm">
+                <i class="fas fa-info-circle text-yellow-600 mr-2"></i>
+                <strong>Catatan:</strong> Kami menggunakan proxy CORS untuk mengakses website lain. Jika gagal, coba URL sederhana seperti https://example.com terlebih dahulu.
             </div>
         </div>
 
@@ -117,48 +127,30 @@
         <!-- Instructions Card -->
         <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                <i class="fas fa-question-circle text-purple-500 mr-2"></i>Cara Penggunaan
+                <i class="fas fa-question-circle text-purple-500 mr-2"></i>Cara Penggunaan & Troubleshooting
             </h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-4">
                 <div class="bg-gray-50 p-4 rounded-lg">
                     <div class="flex items-center mb-2">
                         <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                            <span class="font-semibold">1</span>
+                            <span class="font-semibold">1-4</span>
                         </div>
-                        <h3 class="font-medium text-gray-800">Masukkan URL</h3>
+                        <h3 class="font-medium text-gray-800">Langkah Dasar</h3>
                     </div>
-                    <p class="text-gray-600 text-sm">Ketik atau salin URL website yang ingin Anda lihat source code-nya (contoh: https://example.com)</p>
+                    <p class="text-gray-600 text-sm">Ikuti langkah yang sama seperti sebelumnya: Masukkan URL → Klik tombol → Lihat hasil → Salin/Download.</p>
                 </div>
-                
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <div class="flex items-center mb-2">
-                        <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                            <span class="font-semibold">2</span>
-                        </div>
-                        <h3 class="font-medium text-gray-800">Klik Lihat Source Code</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm">Klik tombol "Lihat Source Code" untuk memproses dan mengambil source code dari website</p>
-                </div>
-                
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <div class="flex items-center mb-2">
-                        <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                            <span class="font-semibold">3</span>
-                        </div>
-                        <h3 class="font-medium text-gray-800">Lihat dan Analisis</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm">Source code akan ditampilkan dalam format yang mudah dibaca dengan highlight syntax</p>
-                </div>
-                
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <div class="flex items-center mb-2">
-                        <div class="bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center mr-3">
-                            <span class="font-semibold">4</span>
-                        </div>
-                        <h3 class="font-medium text-gray-800">Salin atau Download</h3>
-                    </div>
-                    <p class="text-gray-600 text-sm">Gunakan tombol "Salin" atau "Download" untuk menyimpan source code yang ditampilkan</p>
+
+                <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                    <h3 class="font-medium text-gray-800 mb-2">Jika Masih Error:</h3>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li>• <strong>Coba URL sederhana:</strong> Mulai dengan https://example.com atau https://google.com untuk test.</li>
+                        <li>• <strong>Periksa koneksi internet:</strong> Pastikan browser tidak memblokir request (disable ad-blocker sementara).</li>
+                        <li>• <strong>Ganti browser:</strong> Coba di Chrome, Firefox, atau Edge. Hindari mode Incognito jika ada extension yang mengganggu.</li>
+                        <li>• <strong>Timeout:</strong> Jika loading lama (>30 detik), refresh halaman dan coba lagi.</li>
+                        <li>• <strong>Website tertentu:</strong> Beberapa situs (seperti bank atau protected) mungkin memblokir proxy. Coba situs publik seperti Wikipedia.</li>
+                        <li>• <strong>Alternatif manual:</strong> Buka website di tab baru, tekan Ctrl+U (View Source) di browser Anda.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -178,53 +170,42 @@
             const copyButton = document.getElementById('copyButton');
             const downloadButton = document.getElementById('downloadButton');
             
-            // Initial focus pada input
+            // Initial focus
             urlInput.focus();
             
-            // Event handler untuk tombol fetch
+            // Event handlers (sama seperti sebelumnya)
             fetchButton.addEventListener('click', fetchSourceCode);
-            
-            // Event handler untuk tekan Enter di input
             urlInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     fetchSourceCode();
                 }
             });
             
-            // Event handler untuk tombol salin
             copyButton.addEventListener('click', function() {
                 const textToCopy = sourceCode.textContent;
                 navigator.clipboard.writeText(textToCopy).then(() => {
-                    // Ubah tampilan tombol untuk menandakan berhasil disalin
                     const originalText = copyButton.innerHTML;
                     copyButton.innerHTML = '<i class="fas fa-check mr-2"></i>Disalin!';
                     copyButton.classList.add('bg-green-100', 'text-green-800');
-                    
                     setTimeout(() => {
                         copyButton.innerHTML = originalText;
                         copyButton.classList.remove('bg-green-100', 'text-green-800');
                     }, 2000);
                 }).catch(err => {
-                    showError('Gagal menyalin teks: ' + err);
+                    showError('Gagal menyalin: ' + err);
                 });
             });
             
-            // Event handler untuk tombol download
             downloadButton.addEventListener('click', function() {
                 const textToDownload = sourceCode.textContent;
-                const blob = new Blob([textToDownload], { type: 'text/html' });
+                const blob = new Blob([textToDownload], { type: 'text/html;charset=utf-8' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                
-                // Buar nama file dari URL
                 let fileName = 'source-code.html';
                 try {
                     const urlObj = new URL(urlInput.value);
-                    fileName = `source-code-${urlObj.hostname}.html`;
-                } catch (e) {
-                    // Jika URL tidak valid, gunakan default
-                }
-                
+                    fileName = `source-code-${urlObj.hostname.replace(/[^a-zA-Z0-9]/g, '-')}.html`;
+                } catch (e) {}
                 a.href = url;
                 a.download = fileName;
                 document.body.appendChild(a);
@@ -233,80 +214,104 @@
                 URL.revokeObjectURL(url);
             });
             
-            // Fungsi untuk mengambil source code
-            function fetchSourceCode() {
-                const url = urlInput.value.trim();
+            // Fungsi fetch yang diperbaiki
+            async function fetchWithProxy(url, proxyType = 'corsproxy') {
+                let proxyUrl = '';
+                if (proxyType === 'corsproxy') {
+                    proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+                } else if (proxyType === 'allorigins') {
+                    proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+                }
                 
-                // Validasi input
-                if (!url) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 detik timeout
+                
+                try {
+                    const response = await fetch(proxyUrl, {
+                        signal: controller.signal,
+                        headers: {
+                            'User -Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                        }
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    return await response.text();
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        throw new Error('Timeout: Request terlalu lama. Coba lagi atau gunakan URL lain.');
+                    }
+                    throw error;
+                }
+            }
+            
+            function fetchSourceCode() {
+                let inputUrl = urlInput.value.trim();
+                
+                if (!inputUrl) {
                     showError('Harap masukkan URL website');
                     return;
                 }
                 
                 // Normalisasi URL
-                let normalizedUrl = url;
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    normalizedUrl = 'https://' + url;
+                if (!inputUrl.startsWith('http://') && !inputUrl.startsWith('https://')) {
+                    inputUrl = 'https://' + inputUrl;
                 }
                 
-                // Validasi format URL
+                // Validasi URL
                 try {
-                    new URL(normalizedUrl);
+                    new URL(inputUrl);
                 } catch (e) {
-                    showError('Format URL tidak valid. Contoh: https://example.com');
+                    showError('Format URL tidak valid. Pastikan dimulai dengan https://');
                     return;
                 }
                 
-                // Sembunyikan error dan results, tampilkan loading
+                // Reset UI
                 errorMessage.classList.add('hidden');
                 results.classList.add('hidden');
                 loading.classList.remove('hidden');
+                fetchButton.disabled = true;
+                fetchButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Memproses...';
                 
-                // Gunakan CORS proxy untuk menghindari masalah CORS
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                
-                // Lakukan fetch
-                fetch(proxyUrl + normalizedUrl)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`Gagal mengambil website: ${response.status} ${response.statusText}`);
-                        }
-                        return response.text();
-                    })
+                // Coba proxy utama, lalu fallback
+                fetchWithProxy(inputUrl, 'corsproxy')
                     .then(html => {
-                        // Tampilkan hasil
-                        displaySourceCode(html, normalizedUrl);
+                        displaySourceCode(html, inputUrl);
                     })
                     .catch(error => {
-                        showError(error.message || 'Terjadi kesalahan saat mengambil source code');
+                        console.log('Proxy utama gagal:', error);
+                        // Fallback ke proxy kedua
+                        return fetchWithProxy(inputUrl, 'allorigins');
+                    })
+                    .then(html => {
+                        displaySourceCode(html, inputUrl);
+                    })
+                    .catch(error => {
+                        showError(`Gagal mengambil source code: ${error.message}. Coba URL lain atau periksa troubleshooting di bawah.`);
                     })
                     .finally(() => {
                         loading.classList.add('hidden');
+                        fetchButton.disabled = false;
+                        fetchButton.innerHTML = '<i class="fas fa-eye mr-2"></i>Lihat Source Code';
                     });
             }
             
-            // Fungsi untuk menampilkan source code
             function displaySourceCode(code, url) {
-                // Format dan tampilkan code
-                sourceCode.textContent = code;
-                
-                // Update karakter count
+                sourceCode.textContent = code || 'Tidak ada konten yang ditemukan.';
                 charCount.textContent = code.length + ' karakter';
-                
-                // Tampilkan URL
                 urlDisplay.textContent = 'Source code dari: ' + url;
-                
-                // Tampilkan results section
                 results.classList.remove('hidden');
-                
-                // Scroll ke results
                 results.scrollIntoView({ behavior: 'smooth' });
             }
             
-            // Fungsi untuk menampilkan error
             function showError(message) {
                 errorText.textContent = message;
                 errorMessage.classList.remove('hidden');
+                urlInput.focus();
             }
         });
     </script>
